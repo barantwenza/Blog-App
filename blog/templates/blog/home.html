@@ -1,0 +1,27 @@
+{% extends 'authentication/base.html' %}
+{% load blog_extras %}
+{% block content %}
+
+    <h2>Your Feed</h2>
+    <div class="grid-container">
+        {% for instance in blogs_and_photos %}
+            {% if instance | model_type =='blog' %}
+                <div class ='post'>
+                    <a href="{% url 'view_blog' instance.id %}">
+                        <h4>Blog Post:{{ instance.title }}</h4>
+                        <img src="{{ instance.photo.image.url }}" alt="">
+                        <p><strong>Written by {{ instance.contributors.all | join:"," }}</strong></p>
+                        <p>{{ instance.date_created }}</p>
+
+                    </a>
+                </div>
+            {% elif instance|model_type == 'Photo' %}
+                <div class="'post">
+                    <img src="{{ instance.image.url }}" alt="">
+                    <p>{{ instance.caption }}</p>
+                    <p><strong>Taken by{{ instance.uploader }}</strong></p>
+                    <p>{{ instance.date_created }}</p>
+                </div>
+            {% endif %}
+    </div>
+{% endblock content %}
